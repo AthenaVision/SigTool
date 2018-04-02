@@ -24,12 +24,13 @@ namespace SigTool
 
         public Form1()
         {
-            MaterialSkinManager.Instance.ColorScheme = MaterialSkinManager.Colors.Blue;
-            MaterialSkinManager.Instance.Theme = MaterialSkinManager.Themes.DARK;
+            MaterialSkinManager.Instance.ColorScheme = MaterialSkinManager.Colors.Green;
+           // MaterialSkinManager.Instance.Theme = MaterialSkinManager.Themes.DARK;
            
             InitializeComponent();
             PreUnknown.Visible = false;
-            proclistview.BackColor = MaterialSkinManager.BACKGROUND_DARK;
+            proclistview.BackColor = MaterialSkinManager.Instance.GetApplicationBackgroundColor();
+
             UIUpdate();
             ProdUpdate();
 
@@ -37,7 +38,7 @@ namespace SigTool
             proclistview.Columns.Add("Title", -2, HorizontalAlignment.Center);
 
 
-            sigEditListView.BackColor = MaterialSkinManager.BACKGROUND_DARK;
+            sigEditListView.BackColor = MaterialSkinManager.Instance.GetApplicationBackgroundColor();
             sigEditListView.Columns.Add("Name", 150, HorizontalAlignment.Left);
             sigEditListView.Columns.Add("Sig", 100, HorizontalAlignment.Center);
             sigEditListView.Columns.Add("Function", 100, HorizontalAlignment.Right);
