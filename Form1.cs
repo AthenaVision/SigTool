@@ -209,20 +209,20 @@ namespace SigTool
                 ID = GetAutoID(ProdData.Text);
                 switch (ID)
                 {
-                    case SigStyle.Byte: ProdRadio_Byte.Checked = true; break;
-                    case SigStyle.Code: ProdRadio_Code.Checked = true; break;
-                    case SigStyle.IDA: ProdRadio_IDA.Checked = true; break;
-                    case SigStyle.PEiD: ProdRadio_PEiD.Checked = true; break;
+                    case SigStyle.Byte: ProdRadio_Byte.Checked = true; ProdMask.Enabled = true; break;
+                    case SigStyle.Code: ProdRadio_Code.Checked = true; ProdMask.Enabled = true; break;
+                    case SigStyle.IDA: ProdRadio_IDA.Checked = true; ProdMask.Enabled = false; break;
+                    case SigStyle.PEiD: ProdRadio_PEiD.Checked = true; ProdMask.Enabled = false; break;
                     case SigStyle.Error: ProdUnknown.Visible = ProdUnknown.Checked = true; break;
                 }
             }
             else
             {
                 ProdUnknown.Visible = ProdUnknown.Checked = false;
-                if (ProdRadio_Byte.Checked) ID = SigStyle.Byte;
-                if (ProdRadio_Code.Checked) ID = SigStyle.Code;
-                if (ProdRadio_IDA.Checked) ID = SigStyle.IDA;
-                if (ProdRadio_PEiD.Checked) ID = SigStyle.PEiD;
+                if (ProdRadio_Byte.Checked) { ID = SigStyle.Byte;  }
+                if (ProdRadio_Code.Checked) { ID = SigStyle.Code; }
+                if (ProdRadio_IDA.Checked) { ID = SigStyle.IDA;  }
+                if (ProdRadio_PEiD.Checked) { ID = SigStyle.PEiD; }
             }
 
             if (ID == SigStyle.Error)
