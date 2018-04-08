@@ -12,7 +12,10 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 using MaterialSkin;
+using Microsoft.Win32;
+using System.IO;
 
 namespace SigTool
 {
@@ -20,13 +23,13 @@ namespace SigTool
     {
 
 
-        
 
-        public Form1()
+
+        public Form1(string FileToOpen)
         {
-            MaterialSkinManager.Instance.ColorScheme = MaterialSkinManager.Colors.Green;
-           // MaterialSkinManager.Instance.Theme = MaterialSkinManager.Themes.DARK;
-           
+            MaterialSkinManager.Instance.ColorScheme = MaterialSkinManager.Colors.Blue;
+             MaterialSkinManager.Instance.Theme = MaterialSkinManager.Themes.DARK;
+
             InitializeComponent();
             PreUnknown.Visible = false;
             proclistview.BackColor = MaterialSkinManager.Instance.GetApplicationBackgroundColor();
@@ -39,7 +42,7 @@ namespace SigTool
 
 
             sigEditListView.BackColor = MaterialSkinManager.Instance.GetApplicationBackgroundColor();
-            sigEditListView.Columns.Add("Name", 150, HorizontalAlignment.Left);
+            sigEditListView.Columns.Add("Name", 200, HorizontalAlignment.Left);
             sigEditListView.Columns.Add("Sig", 100, HorizontalAlignment.Center);
             sigEditListView.Columns.Add("Function", 100, HorizontalAlignment.Right);
             sigEditListView.Columns.Add("Address ", -2, HorizontalAlignment.Right);
@@ -47,6 +50,11 @@ namespace SigTool
             refreshprocesses();
             System.Threading.Thread bgthread = new System.Threading.Thread(bgshit);
             bgthread.Start();
+
+            if (FileToOpen != "none")
+            {
+                LoadFile(FileToOpen);
+            }
         }
 
         void refreshprocesses()
@@ -60,7 +68,7 @@ namespace SigTool
                     if ((processlist[i].ProcessName.IndexOf(this.searchbox.Text, StringComparison.OrdinalIgnoreCase) >= 0) ||
                         (processlist[i].MainWindowTitle.IndexOf(this.searchbox.Text, StringComparison.OrdinalIgnoreCase) >= 0))
                     {
-                       // if (processlist[i].IsWin64Emulator())
+                        // if (processlist[i].IsWin64Emulator())
                         {
                             ListViewItem item1 = new ListViewItem(new string[] { processlist[i].ProcessName, processlist[i].MainWindowTitle });
 
@@ -106,7 +114,8 @@ namespace SigTool
                     case SigStyle.PEiD: PreRadio_PEiD.Checked = true; break;
                     case SigStyle.Error: PreUnknown.Visible = PreUnknown.Checked = true; break;
                 }
-            } else
+            }
+            else
             {
                 PreUnknown.Visible = PreUnknown.Checked = false;
                 if (PreRadio_Byte.Checked) ID = SigStyle.Byte;
@@ -118,7 +127,8 @@ namespace SigTool
             if (ID == SigStyle.Error)
             {
                 PreUnknown.Visible = PreUnknown.Checked = true;
-            } else
+            }
+            else
             {
                 PreUnknown.Visible = false;
             }
@@ -173,7 +183,7 @@ namespace SigTool
                     PostMask.Enabled = false;
                     break;
             }
-           
+
 
 
 
@@ -194,9 +204,10 @@ namespace SigTool
 
             ProdRadio_Code.AutoCheck = ProdRadio_IDA.AutoCheck = ProdRadio_PEiD.AutoCheck = ProdRadio_Byte.AutoCheck = ProdAutoDetect.Enabled;
 
-            foreach(Signature sig in Signature.list)
+            foreach (Signature sig in Signature.list)
             {
-                if (sig.name == ProdSigName.Text) {
+                if (sig.name == ProdSigName.Text)
+                {
                     savesigbutton.Enabled = validsigbox.Checked = false;
                     return;
                 }
@@ -219,9 +230,9 @@ namespace SigTool
             else
             {
                 ProdUnknown.Visible = ProdUnknown.Checked = false;
-                if (ProdRadio_Byte.Checked) { ID = SigStyle.Byte;  }
+                if (ProdRadio_Byte.Checked) { ID = SigStyle.Byte; }
                 if (ProdRadio_Code.Checked) { ID = SigStyle.Code; }
-                if (ProdRadio_IDA.Checked) { ID = SigStyle.IDA;  }
+                if (ProdRadio_IDA.Checked) { ID = SigStyle.IDA; }
                 if (ProdRadio_PEiD.Checked) { ID = SigStyle.PEiD; }
             }
 
@@ -257,7 +268,7 @@ namespace SigTool
                     savesigbutton.Enabled = validsigbox.Checked = false;
                     break;
                 case (null):
-                    savesigbutton.Enabled  = validsigbox.Checked = false;
+                    savesigbutton.Enabled = validsigbox.Checked = false;
 
                     break;
             }
@@ -293,7 +304,7 @@ namespace SigTool
         bool? CheckByte(string data, string mask)
         {
             //check syntax
-            bool toret =  (Regex.Matches(data + ", ", @"0x[0-9a-f]{2},\s").Count * 6 == data.Length + 2);
+            bool toret = (Regex.Matches(data + ", ", @"0x[0-9a-f]{2},\s").Count * 6 == data.Length + 2);
             if (toret != true) return false;
             //check mask
             toret = (Regex.Matches(data + ", ", @"0x[0-9a-f]{2},\s").Count == mask.Length);
@@ -349,17 +360,17 @@ namespace SigTool
             return outstr;
         }
 
-        
+
 
 
         string[] ConvertSig(SigStyle fromstyle, SigStyle tostyle, string data, string mask)
         {
             data = ConvertPEiD(fromstyle, data, mask);
-            string[] outstr = new string[] { "", ""};
+            string[] outstr = new string[] { "", "" };
             if ((tostyle == SigStyle.PEiD) && CheckPEiD(data)) outstr[0] = data;
             if ((tostyle == SigStyle.IDA) && CheckPEiD(data))
             {
-                outstr[0] =  Regex.Replace(data, @"\?{2}", "?");
+                outstr[0] = Regex.Replace(data, @"\?{2}", "?");
             }
             if ((tostyle == SigStyle.Code) && CheckPEiD(data) == true)
             {
@@ -400,6 +411,7 @@ namespace SigTool
 
         private void PreData_TextChanged(object sender, EventArgs e)
         {
+            PreData.Text = PreData.Text.ToLower();
             UIUpdate();
 
         }
@@ -443,20 +455,26 @@ namespace SigTool
 
         private void savesigbutton_Click(object sender, EventArgs e)
         {
-            ListViewItem item1 = new ListViewItem(new string[] { ProdSigName.Text, SigToComp, ProdFuncBox.Checked.ToString() , ""});
+            ListViewItem item1 = new ListViewItem(new string[] { ProdSigName.Text, SigToComp, ProdFuncBox.Checked.ToString(), "" });
 
             Signature sig = new Signature(ProdSigName.Text, SigToComp, MaskToComp, ProdFuncBox.Checked);
             sigEditListView.Items.Add(item1);
             tabcontrol.SelectedIndex = 0;
             ProdUpdate();
-          //  if (materialCheckBox1.Checked) isscanning = true;
+            //  if (materialCheckBox1.Checked) isscanning = true;
         }
 
         private void materialRaisedButton3_Click(object sender, EventArgs e)
         {
             if (!readyToScan.Checked) return;
             RPM.OpenProcess(targetproc.Id);
-            isscanning = true; 
+            foreach (Signature sig in Signature.list)
+            {
+                sig.address = 0;
+            }
+
+
+                isscanning = true;
 
 
         }
@@ -482,7 +500,8 @@ namespace SigTool
             {
                 try
                 {
-                    if (processlist[i].ProcessName == ProcessBox.Text) {
+                    if (processlist[i].ProcessName == ProcessBox.Text)
+                    {
                         targetproc = processlist[i];
                         toen = true;
                         break;
@@ -496,17 +515,25 @@ namespace SigTool
             ScanButton.Enabled = readyToScan.Checked = (sigEditListView.Items.Count > 0 && materialCheckBox1.Checked);
 
 
-            foreach(Signature sig in Signature.list)
+            foreach (Signature sig in Signature.list)
             {
-               foreach (ListViewItem item in sigEditListView.Items)
+                foreach (ListViewItem item in sigEditListView.Items)
                 {
                     if (item.SubItems[0].Text == sig.name)
                     {
                         item.SubItems[3].Text = sig.address.ToString("X");
+                        
                     }
                 }
+                if (sig.address != 0 && isscanning)
+                {
+                    materialProgressBar1.Value = (int)(((float)Signature.list.IndexOf(sig) /(float)Signature.list.Count)*100);
+                }
+                if (!isscanning)
+                {
+                    materialProgressBar1.Value = 0;
+                }
             }
-
 
         }
 
@@ -524,7 +551,7 @@ namespace SigTool
 
         public void bgshit()
         {
-            for(;;)
+            for (; ; )
             {
                 if (isscanning)
                 {
@@ -538,7 +565,7 @@ namespace SigTool
                             bytearra.Add(byte.Parse(parsedstr, NumberStyles.HexNumber));
                         }
                         byte[] data = bytearra.ToArray();
-                        foreach(byte b in data)
+                        foreach (byte b in data)
                         {
                             Console.WriteLine(b.ToString("X"));
                         }
@@ -559,7 +586,7 @@ namespace SigTool
         private void materialRaisedButton3_Click_1(object sender, EventArgs e) // copy output
         {
             List<string> tocpy = new List<string>();
-            foreach(Signature sig in Signature.list)
+            foreach (Signature sig in Signature.list)
             {
                 tocpy.Add("#define " + sig.name + " 0x" + sig.address.ToString("X"));
             }
@@ -567,6 +594,104 @@ namespace SigTool
             Clipboard.SetText(string.Join(Environment.NewLine, strara));
 
         }
+
+        private void materialRaisedButton6_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog op = new OpenFileDialog();
+            op.Filter = "SigTool files |*.st";
+            if (op.ShowDialog() == DialogResult.OK)
+            {
+                LoadFile(op.FileName);
+
+            }
+        }
+
+
+        private void LoadFile(string fileloc)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(fileloc);
+
+            XmlNodeList xml_process = xmlDoc.GetElementsByTagName("process");
+            XmlNodeList xml_sig_name = xmlDoc.GetElementsByTagName("name");
+            XmlNodeList xml_sig_data = xmlDoc.GetElementsByTagName("data");
+            XmlNodeList xml_sig_mask = xmlDoc.GetElementsByTagName("mask");
+
+            XmlNodeList xml_sig_function = xmlDoc.GetElementsByTagName("func");
+
+            sigEditListView.Items.Clear();
+            Signature.list.Clear();
+            ProcessBox.Text = xml_process[0].InnerText;
+            for (int i = 0; i < xml_sig_name.Count; i++)
+            {
+                string[] CodeSig = ConvertSig(SigStyle.Code, SigStyle.Byte, xml_sig_data[i].InnerText, xml_sig_mask[i].InnerText);
+                ListViewItem item1 = new ListViewItem(new string[] { xml_sig_name[i].InnerText, CodeSig[0], xml_sig_function[i].InnerText, "" });
+                Signature sig = new Signature(xml_sig_name[i].InnerText, CodeSig[0], CodeSig[1], bool.Parse(xml_sig_function[i].InnerText));
+                sigEditListView.Items.Add(item1);
+            }
+        }
+
+
+        private void materialRaisedButton5_Click(object sender, EventArgs e)
+        {
+            // save sigs
+
+            XmlDocument doc = new XmlDocument();
+            XmlElement root = doc.DocumentElement;
+
+            XmlElement elem_SigScan = doc.CreateElement(string.Empty, "SigScan", string.Empty);
+            doc.AppendChild(elem_SigScan);
+
+
+            foreach (Signature sig in Signature.list)
+            {
+                XmlElement elem_sig = doc.CreateElement(string.Empty, "Sig", string.Empty);
+                elem_SigScan.AppendChild(elem_sig);
+
+                XmlElement elem_proc = doc.CreateElement(string.Empty, "process", string.Empty);
+                XmlText elem_proc_text = doc.CreateTextNode(ProcessBox.Text);
+                elem_proc.AppendChild(elem_proc_text);
+                elem_SigScan.AppendChild(elem_proc);
+
+                string[] sigshit = ConvertSig(SigStyle.Byte, SigStyle.Code, sig.data, sig.mask);
+
+                XmlElement elem_name = doc.CreateElement(string.Empty, "name", string.Empty);
+                XmlText elem_text_name = doc.CreateTextNode(sig.name);
+                elem_name.AppendChild(elem_text_name);
+                elem_sig.AppendChild(elem_name);
+
+                XmlElement elem_data = doc.CreateElement(string.Empty, "data", string.Empty);
+                XmlText elem_text_data = doc.CreateTextNode(sigshit[0]);
+                elem_data.AppendChild(elem_text_data);
+                elem_sig.AppendChild(elem_data);
+
+                XmlElement elem_mask = doc.CreateElement(string.Empty, "mask", string.Empty);
+                XmlText elem_text_mask = doc.CreateTextNode(sigshit[1]);
+                elem_mask.AppendChild(elem_text_mask);
+                elem_sig.AppendChild(elem_mask);
+
+                XmlElement elem_func = doc.CreateElement(string.Empty, "func", string.Empty);
+                XmlText elem_text_func = doc.CreateTextNode(sig.function.ToString());
+                elem_func.AppendChild(elem_text_func);
+                elem_sig.AppendChild(elem_func);
+
+            }
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "SigTool Files |*.st";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                doc.Save(saveFileDialog.FileName);
+            }
+
+        }
+
+
+
+
+
+
+
+
     }
 
 
@@ -612,5 +737,5 @@ namespace SigTool
             list.Add(this);
         }
     }
-
+    
 }

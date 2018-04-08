@@ -1,0 +1,37 @@
+<SigScan>
+  <Sig>
+    <name>OFFSET_ClientGameContext</name>
+    <data>\x48\x89\x15\x00\x00\x00\x00\x48\x89\xcb</data>
+    <mask>xxx????xxx</mask>
+    <func>False</func>
+  </Sig>
+  <process>starwarsbattlefrontii</process>
+  <Sig>
+    <name>OFFSET_GameRenderer</name>
+    <data>\x48\x8b\x0d\x00\x00\x00\x00\x48\x85\xc9\x74\x0b\x48\x8b\x01\xba\x00\x00\x00\x00\xff\x50\x68</data>
+    <mask>xxx????xxxxxxxxx????xxx</mask>
+    <func>False</func>
+  </Sig>
+  <process>starwarsbattlefrontii</process>
+  <Sig>
+    <name>OFFSET_FirstTypeInfo</name>
+    <data>\x48\x8b\x05\x00\x00\x00\x00\x48\x89\x41\x08\x48\x89\x0d\x00\x00\x00\x00</data>
+    <mask>xxx????xxxxxxx????</mask>
+    <func>False</func>
+  </Sig>
+  <process>starwarsbattlefrontii</process>
+  <Sig>
+    <name>OFFSET_DXRenderer</name>
+    <data>\x48\x8b\x0d\x00\x00\x00\x00\x48\x8b\x01\xff\x50\x20\x85\xc0</data>
+    <mask>xxx????xxxxxxxx</mask>
+    <func>False</func>
+  </Sig>
+  <process>starwarsbattlefrontii</process>
+  <Sig>
+    <name>OFFSET_Main</name>
+    <data>\x48\x8b\x05\x00\x00\x00\x00\x48\x63\x58\x40\xe8\x00\x00\x00\x00\x48</data>
+    <mask>xxx????xxxxx????x</mask>
+    <func>False</func>
+  </Sig>
+  <process>starwarsbattlefrontii</process>
+</SigScan>

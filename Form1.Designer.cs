@@ -29,8 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabcontrol = new MaterialSkin.Controls.MaterialTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.materialRaisedButton6 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.materialRaisedButton5 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.materialRaisedButton4 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.materialRaisedButton3 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.readyToScan = new MaterialSkin.Controls.MaterialCheckBox();
@@ -84,6 +87,7 @@
             this.PreData = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.PreRadio_Code = new MaterialSkin.Controls.MaterialRadioButton();
             this.PreMask = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.materialProgressBar1 = new MaterialSkin.Controls.MaterialProgressBar();
             this.materialTabSelector1 = new MaterialSkin.Controls.MaterialTabSelector();
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -114,6 +118,8 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.tabPage1.Controls.Add(this.materialRaisedButton6);
+            this.tabPage1.Controls.Add(this.materialRaisedButton5);
             this.tabPage1.Controls.Add(this.materialRaisedButton4);
             this.tabPage1.Controls.Add(this.materialRaisedButton3);
             this.tabPage1.Controls.Add(this.readyToScan);
@@ -129,6 +135,38 @@
             this.tabPage1.Size = new System.Drawing.Size(674, 357);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Scanner";
+            // 
+            // materialRaisedButton6
+            // 
+            this.materialRaisedButton6.AutoSize = true;
+            this.materialRaisedButton6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.materialRaisedButton6.Depth = 0;
+            this.materialRaisedButton6.Icon = null;
+            this.materialRaisedButton6.Location = new System.Drawing.Point(579, 171);
+            this.materialRaisedButton6.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton6.Name = "materialRaisedButton6";
+            this.materialRaisedButton6.Primary = true;
+            this.materialRaisedButton6.Size = new System.Drawing.Size(89, 36);
+            this.materialRaisedButton6.TabIndex = 17;
+            this.materialRaisedButton6.Text = "Load Sigs";
+            this.materialRaisedButton6.UseVisualStyleBackColor = true;
+            this.materialRaisedButton6.Click += new System.EventHandler(this.materialRaisedButton6_Click);
+            // 
+            // materialRaisedButton5
+            // 
+            this.materialRaisedButton5.AutoSize = true;
+            this.materialRaisedButton5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.materialRaisedButton5.Depth = 0;
+            this.materialRaisedButton5.Icon = null;
+            this.materialRaisedButton5.Location = new System.Drawing.Point(580, 129);
+            this.materialRaisedButton5.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton5.Name = "materialRaisedButton5";
+            this.materialRaisedButton5.Primary = true;
+            this.materialRaisedButton5.Size = new System.Drawing.Size(88, 36);
+            this.materialRaisedButton5.TabIndex = 16;
+            this.materialRaisedButton5.Text = "Save Sigs";
+            this.materialRaisedButton5.UseVisualStyleBackColor = true;
+            this.materialRaisedButton5.Click += new System.EventHandler(this.materialRaisedButton5_Click);
             // 
             // materialRaisedButton4
             // 
@@ -203,12 +241,12 @@
             this.sigEditListView.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F);
             this.sigEditListView.FullRowSelect = true;
             this.sigEditListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.sigEditListView.Location = new System.Drawing.Point(7, 39);
+            this.sigEditListView.Location = new System.Drawing.Point(7, 49);
             this.sigEditListView.MouseLocation = new System.Drawing.Point(-1, -1);
             this.sigEditListView.MouseState = MaterialSkin.MouseState.OUT;
             this.sigEditListView.Name = "sigEditListView";
             this.sigEditListView.OwnerDraw = true;
-            this.sigEditListView.Size = new System.Drawing.Size(537, 311);
+            this.sigEditListView.Size = new System.Drawing.Size(537, 301);
             this.sigEditListView.TabIndex = 11;
             this.sigEditListView.UseCompatibleStateImageBehavior = false;
             this.sigEditListView.View = System.Windows.Forms.View.Details;
@@ -261,7 +299,7 @@
             this.ProcessBox.Size = new System.Drawing.Size(484, 23);
             this.ProcessBox.TabIndex = 1;
             this.ProcessBox.TabStop = false;
-            this.ProcessBox.Text = "starwarsbattlefrontii";
+            this.ProcessBox.Text = "process";
             this.ProcessBox.UseSystemPasswordChar = false;
             // 
             // materialLabel9
@@ -1013,6 +1051,15 @@
             this.PreMask.UseSystemPasswordChar = false;
             this.PreMask.TextChanged += new System.EventHandler(this.PreData_TextChanged);
             // 
+            // materialProgressBar1
+            // 
+            this.materialProgressBar1.Depth = 0;
+            this.materialProgressBar1.Location = new System.Drawing.Point(0, 110);
+            this.materialProgressBar1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialProgressBar1.Name = "materialProgressBar1";
+            this.materialProgressBar1.Size = new System.Drawing.Size(708, 5);
+            this.materialProgressBar1.TabIndex = 18;
+            // 
             // materialTabSelector1
             // 
             this.materialTabSelector1.BaseTabControl = this.tabcontrol;
@@ -1036,12 +1083,12 @@
             this.materialLabel1.Name = "materialLabel1";
             this.materialLabel1.Size = new System.Drawing.Size(36, 19);
             this.materialLabel1.TabIndex = 2;
-            this.materialLabel1.Text = "v1.1";
+            this.materialLabel1.Text = "v1.2";
             // 
             // timer1
             // 
             this.timer1.Enabled = true;
-            this.timer1.Interval = 500;
+            this.timer1.Interval = 50;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Form1
@@ -1049,9 +1096,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(706, 500);
+            this.Controls.Add(this.materialProgressBar1);
             this.Controls.Add(this.materialLabel1);
             this.Controls.Add(this.materialTabSelector1);
             this.Controls.Add(this.tabcontrol);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "SigTool by Coltonon";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -1135,6 +1184,9 @@
         private System.Windows.Forms.Timer timer1;
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton4;
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton3;
+        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton6;
+        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton5;
+        private MaterialSkin.Controls.MaterialProgressBar materialProgressBar1;
     }
 }
 
