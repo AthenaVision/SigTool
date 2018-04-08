@@ -642,16 +642,17 @@ namespace SigTool
             XmlElement elem_SigScan = doc.CreateElement(string.Empty, "SigScan", string.Empty);
             doc.AppendChild(elem_SigScan);
 
+            XmlElement elem_proc = doc.CreateElement(string.Empty, "process", string.Empty);
+            XmlText elem_proc_text = doc.CreateTextNode(ProcessBox.Text);
+            elem_proc.AppendChild(elem_proc_text);
+            elem_SigScan.AppendChild(elem_proc);
 
             foreach (Signature sig in Signature.list)
             {
                 XmlElement elem_sig = doc.CreateElement(string.Empty, "Sig", string.Empty);
                 elem_SigScan.AppendChild(elem_sig);
 
-                XmlElement elem_proc = doc.CreateElement(string.Empty, "process", string.Empty);
-                XmlText elem_proc_text = doc.CreateTextNode(ProcessBox.Text);
-                elem_proc.AppendChild(elem_proc_text);
-                elem_SigScan.AppendChild(elem_proc);
+                
 
                 string[] sigshit = ConvertSig(SigStyle.Byte, SigStyle.Code, sig.data, sig.mask);
 
