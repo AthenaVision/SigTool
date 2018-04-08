@@ -1,5 +1,5 @@
 # SigTool
-![image.png](https://s31.postimg.org/l2ettlr2z/image.png)
+![image.png](https://s31.postimg.org/9ekrz81zv/image.png)
 
 Utility for scanning signatures, as well as 
 converting them between different formats.  
